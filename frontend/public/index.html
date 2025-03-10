@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIServers School Helper</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <div class="sidebar">
+            <div class="new-chat">
+                <button class="new-chat-button">
+                    <span>+ New chat</span>
+                </button>
+            </div>
+            <div class="chat-history">
+                <!-- Chat history will be populated dynamically -->
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <!-- User avatar will be populated from Google -->
+                </div>
+                <div class="user-name">
+                    <!-- User name will be populated from Google -->
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chat-container">
+                <div class="messages" id="messages">
+                    <div class="welcome-message">
+                        <h1>AIServers School Helper</h1>
+                        <p>Your AI-powered learning assistant</p>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <div class="input-container">
+                        <textarea 
+                            id="user-input" 
+                            placeholder="Type your message here..."
+                            rows="1"
+                            ></textarea>
+                        <button class="send-button" id="send-button">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <p>AIServers School Helper can make mistakes. Consider checking important information.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

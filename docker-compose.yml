@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.school-frontend.rule=Host(`${DOMAIN}`)"
+        - "traefik.http.routers.school-frontend.entrypoints=websecure"
+        - "traefik.http.routers.school-frontend.tls=true"
+        - "traefik.http.services.school-frontend.loadbalancer.server.port=80"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    environment:
+      - DB_USER=${POSTGRES_USER}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${POSTGRES_DB}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.school-backend.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.school-backend.entrypoints=websecure"
+        - "traefik.http.routers.school-backend.tls=true"
+        - "traefik.http.services.school-backend.loadbalancer.server.port=3000"
+    depends_on:
+      - db
+
+  db:
+    build: ./database
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
