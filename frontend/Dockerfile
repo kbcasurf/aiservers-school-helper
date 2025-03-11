@@ -3,11 +3,17 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
-# Copy package files first for better caching
-COPY package*.json ./
-RUN npm ci
+# Accept build arguments
+ARG REACT_APP_GOOGLE_CLIENT_ID
+ARG REACT_APP_API_URL
 
-# Copy source and build
+# Set as environment variables for the build process
+ENV REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
+COPY package*.json ./
+RUN npm install
+
 COPY . .
 RUN npm run build
 
