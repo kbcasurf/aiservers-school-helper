@@ -10,6 +10,13 @@ services:
         - "traefik.http.routers.school-frontend.entrypoints=websecure"
         - "traefik.http.routers.school-frontend.tls=true"
         - "traefik.http.services.school-frontend.loadbalancer.server.port=80"
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
     depends_on:
       - backend
 
@@ -22,6 +29,11 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_PORT=${DB_PORT}
       - JWT_SECRET=${JWT_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
+      - N8N_AUTH_TOKEN=${N8N_AUTH_TOKEN}
+      - NODE_ENV=production
     deploy:
       labels:
         - "traefik.enable=true"
@@ -29,6 +41,13 @@ services:
         - "traefik.http.routers.school-backend.entrypoints=websecure"
         - "traefik.http.routers.school-backend.tls=true"
         - "traefik.http.services.school-backend.loadbalancer.server.port=3000"
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
     depends_on:
       - db
 
@@ -40,6 +59,13 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
 
 volumes:
   pgdata:

@@ -210,3 +210,16 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+// Add this near your other routes
+app.get('/health', (req, res) => {
+  // Check database connection
+  pool.query('SELECT 1')
+    .then(() => {
+      res.status(200).json({ status: 'ok' });
+    })
+    .catch(err => {
+      console.error('Health check failed:', err);
+      res.status(500).json({ status: 'error', message: 'Database connection failed' });
+    });
+});
