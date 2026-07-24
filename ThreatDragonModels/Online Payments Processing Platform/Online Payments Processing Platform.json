@@ -1,5 +1,5 @@
 {
-  "version": "2.3.0",
+  "version": "2.6.2",
   "summary": {
     "title": "Online Payments Processing Platform",
     "owner": "Paschoal Diniz",
@@ -25,7 +25,7 @@
         "diagramType": "STRIDE",
         "placeholder": "New STRIDE diagram description",
         "thumbnail": "./public/content/images/thumbnail.stride.jpg",
-        "version": "2.3.0",
+        "version": "2.6.2",
         "cells": [
           {
             "position": {
@@ -50,7 +50,18 @@
               "name": "Customer /\nInternet",
               "description": "",
               "isTrustBoundary": true,
-              "hasOpenThreats": false
+              "hasOpenThreats": false,
+              "containedElements": [
+                "313655e5-4832-4424-b13c-7a3618543737"
+              ],
+              "crossingFlows": [
+                "bd50f8ec-ce5d-477d-84e9-f50d1ebe4bc4",
+                "bed188fc-babc-4061-a122-dd2270adf37d",
+                "f01e4de9-a79b-460d-84dc-9e929e14946d",
+                "48fa6630-5cd9-40e8-8f64-4cd134682065",
+                "93d0c80f-02f1-4260-b498-e99d2cd200a9",
+                "2ccf113d-6dfb-4dca-9f2c-1fcfa321decf"
+              ]
             }
           },
           {
@@ -76,7 +87,15 @@
               "description": "",
               "isTrustBoundary": true,
               "hasOpenThreats": false,
-              "name": "Merchant / Web"
+              "name": "Merchant / Web",
+              "containedElements": [
+                "9a109a12-5616-4a78-b268-96e2cf68e9b3"
+              ],
+              "crossingFlows": [
+                "48fa6630-5cd9-40e8-8f64-4cd134682065",
+                "3c3b4416-5b07-4b94-b73d-52f38137d29b",
+                "bf0e4da4-150b-4f1a-b59d-3e82c7b03e91"
+              ]
             }
           },
           {
@@ -102,7 +121,17 @@
               "name": "Stripe /\nWeb",
               "description": "",
               "isTrustBoundary": true,
-              "hasOpenThreats": false
+              "hasOpenThreats": false,
+              "containedElements": [
+                "43b2bb57-8d50-479f-abf3-c9addd9aa295",
+                "91a72b16-b05b-463a-b0c6-62fa2dd0f72b"
+              ],
+              "crossingFlows": [
+                "93d0c80f-02f1-4260-b498-e99d2cd200a9",
+                "2ccf113d-6dfb-4dca-9f2c-1fcfa321decf",
+                "3c3b4416-5b07-4b94-b73d-52f38137d29b",
+                "bf0e4da4-150b-4f1a-b59d-3e82c7b03e91"
+              ]
             }
           },
           {
@@ -259,8 +288,8 @@
                 "text": "Customer Client"
               },
               "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "strokeDasharray": null
               }
             },
@@ -356,19 +385,34 @@
               "description": "",
               "outOfScope": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "handlesCardPayment": false,
               "handlesGoodsOrServices": false,
               "isWebApplication": false,
               "privilegeLevel": "",
-              "threats": []
+              "threats": [
+                {
+                  "id": "c40fb1bd-701d-4719-8f45-e06f94f155b2",
+                  "title": "Client-side code tampering/injection (XSS)",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Tampering",
+                  "description": "The Customer Client is a browser-based process handling sensitive flows (order intent, card confirmation); if vulnerable to XSS or malicious browser extensions, an attacker could tamper with requests or intercept payment data.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Implement a strict Content Security Policy, sanitize all user inputs, use Subresource Integrity for third-party scripts, and regularly test for XSS vulnerabilities.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 11,
+                  "score": ""
+                }
+              ]
             }
           },
           {
             "shape": "flow",
             "attrs": {
               "line": {
-                "stroke": "#333333",
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "targetMarker": {
                   "name": "block"
                 },
@@ -381,19 +425,44 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(1) Customer logs into\nthe merchant site",
+              "description": "OAuth",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTPS",
+              "threats": [
+                {
+                  "id": "d00bb58c-e5f8-4b60-ac64-0e020d18eb34",
+                  "title": "Credential theft or session hijacking during login",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Spoofing",
+                  "description": "An attacker could intercept or spoof the login flow between the Customer and Customer Client to impersonate a legitimate user, especially if session tokens are not properly protected.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Enforce TLS 1.2+, use secure/HttpOnly/SameSite cookies, implement MFA, and validate session tokens on every request.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 1,
+                  "score": ""
+                }
+              ],
+              "trustBoundaryIds": [
+                "347f80ba-5755-47a5-9a1b-295fe75552b2"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(1) Customer logs into\nthe merchant site",
                     "textAnchor": "middle",
@@ -407,6 +476,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -416,20 +495,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(1) Customer logs into\nthe merchant site",
-              "description": "OAuth",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "HTTPS",
-              "threats": []
-            },
             "id": "bd50f8ec-ce5d-477d-84e9-f50d1ebe4bc4",
             "source": {
               "cell": "a10e3c57-dad4-4914-b702-a43d9bf13956",
@@ -463,19 +528,30 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(2) Customer proceeds to payment page\nto make a purchase",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTPS",
+              "threats": [],
+              "trustBoundaryIds": [
+                "347f80ba-5755-47a5-9a1b-295fe75552b2"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(2) Customer proceeds to payment page\nto make a purchase",
                     "textAnchor": "middle",
@@ -489,6 +565,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -498,20 +584,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(2) Customer proceeds to payment page\nto make a purchase",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "HTTPS",
-              "threats": []
-            },
             "id": "bed188fc-babc-4061-a122-dd2270adf37d",
             "source": {
               "cell": "a10e3c57-dad4-4914-b702-a43d9bf13956",
@@ -532,7 +604,8 @@
             "shape": "flow",
             "attrs": {
               "line": {
-                "stroke": "#333333",
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "targetMarker": {
                   "name": "block"
                 },
@@ -545,19 +618,44 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(7) Customer provides card details\nand finalizes payment",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [
+                {
+                  "id": "69131616-e063-43dc-adbf-6cb294ead2dc",
+                  "title": "Exposure of sensitive card data",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Information disclosure",
+                  "description": "Card details are transmitted from the Customer to the Customer Client; if not handled via a PCI-compliant tokenization mechanism (e.g., Stripe Elements/iframe), sensitive cardholder data could be exposed to the merchant's client-side code or logged inadvertently.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Use Stripe Elements or Stripe.js hosted fields so raw PAN/CVV never enters the merchant's JavaScript context; ensure no card data is logged or stored outside PCI DSS scope.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 4,
+                  "score": ""
+                }
+              ],
+              "trustBoundaryIds": [
+                "347f80ba-5755-47a5-9a1b-295fe75552b2"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(7) Customer provides card details\nand finalizes payment",
                     "textAnchor": "middle",
@@ -571,6 +669,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -580,20 +688,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(7) Customer provides card details\nand finalizes payment",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "f01e4de9-a79b-460d-84dc-9e929e14946d",
             "source": {
               "cell": "a10e3c57-dad4-4914-b702-a43d9bf13956",
@@ -614,7 +708,8 @@
             "shape": "flow",
             "attrs": {
               "line": {
-                "stroke": "#333333",
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "targetMarker": {
                   "name": "block"
                 },
@@ -627,19 +722,45 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(3) Customer Client sends order intent\nincluding order amount\n(6) Return PaymentIntent to\nthe Customer Client",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": true,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [
+                {
+                  "id": "4123607b-69cc-43b7-a97d-c3e339dd98e8",
+                  "title": "Order amount tampering in transit",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Tampering",
+                  "description": "The order amount is sent from the Customer Client to the Merchant Web Server without indicated encryption/integrity controls in the model, allowing an attacker to modify the amount before it reaches the merchant.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Enforce HTTPS with certificate pinning, sign/validate the order amount server-side, and recompute the price from a trusted source rather than trusting client-supplied values.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 2,
+                  "score": ""
+                }
+              ],
+              "trustBoundaryIds": [
+                "347f80ba-5755-47a5-9a1b-295fe75552b2",
+                "d50ff0be-15cd-4ddb-80b3-37e06d71fcf2"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(3) Customer Client sends order intent\nincluding order amount\n(6) Return PaymentIntent to\nthe Customer Client",
                     "textAnchor": "middle",
@@ -653,6 +774,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -662,20 +793,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(3) Customer Client sends order intent\nincluding order amount\n(6) Return PaymentIntent to\nthe Customer Client",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": true,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "48fa6630-5cd9-40e8-8f64-4cd134682065",
             "source": {
               "cell": "313655e5-4832-4424-b13c-7a3618543737",
@@ -713,19 +830,28 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(9) Attempt payment",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [],
+              "trustBoundaryIds": []
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(9) Attempt payment",
                     "textAnchor": "middle",
@@ -739,6 +865,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -748,20 +884,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(9) Attempt payment",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "6e2c1f8e-4f6f-44a7-9303-549d9329dbb6",
             "source": {
               "cell": "43b2bb57-8d50-479f-abf3-c9addd9aa295",
@@ -782,7 +904,8 @@
             "shape": "flow",
             "attrs": {
               "line": {
-                "stroke": "#333333",
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "targetMarker": {
                   "name": "block"
                 },
@@ -795,19 +918,42 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(10) Payment Response",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [
+                {
+                  "id": "2c498769-f4cd-4049-95da-9cc44fec2da8",
+                  "title": "Lack of non-repudiation for payment responses",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Repudiation",
+                  "description": "Without proper logging and signing of payment responses between Stripe Payment Service and Stripe API service, a party could later deny that a specific payment outcome occurred.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Enable detailed audit logging on both sides, use Stripe webhooks with signature verification, and retain immutable transaction logs for dispute resolution.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 7,
+                  "score": ""
+                }
+              ],
+              "trustBoundaryIds": []
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(10) Payment Response",
                     "textAnchor": "middle",
@@ -821,6 +967,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -830,20 +986,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(10) Payment Response",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "9e576812-499d-407c-bf1e-114505d4bd77",
             "source": {
               "cell": "91a72b16-b05b-463a-b0c6-62fa2dd0f72b",
@@ -868,7 +1010,8 @@
             "shape": "flow",
             "attrs": {
               "line": {
-                "stroke": "#333333",
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "targetMarker": {
                   "name": "block"
                 },
@@ -881,19 +1024,45 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(11) Return the PaymentIntent\nwith status",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [
+                {
+                  "id": "0c7ba203-bbe7-45b7-8aa0-9cdad8b6b496",
+                  "title": "Sensitive PaymentIntent data exposure to client",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Information disclosure",
+                  "description": "The PaymentIntent status returned to the Customer Client may include sensitive metadata (e.g., partial card details, internal error messages) that could be disclosed to an attacker monitoring the client-side traffic.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Limit the PaymentIntent fields exposed to the client to only what's necessary (status, client_secret), and avoid returning verbose error details or internal metadata.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 8,
+                  "score": ""
+                }
+              ],
+              "trustBoundaryIds": [
+                "347f80ba-5755-47a5-9a1b-295fe75552b2",
+                "4991548a-366e-4c45-87fc-487056f4379d"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(11) Return the PaymentIntent\nwith status",
                     "textAnchor": "middle",
@@ -907,6 +1076,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -916,20 +1095,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(11) Return the PaymentIntent\nwith status",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "93d0c80f-02f1-4260-b498-e99d2cd200a9",
             "source": {
               "cell": "43b2bb57-8d50-479f-abf3-c9addd9aa295",
@@ -950,7 +1115,8 @@
             "shape": "flow",
             "attrs": {
               "line": {
-                "stroke": "#333333",
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "targetMarker": {
                   "name": "block"
                 },
@@ -963,19 +1129,45 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(8) Customer Client send Stripe\ne.ConfirmCardPayment()",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [
+                {
+                  "id": "a99caae1-a38d-4ab4-b73a-8d5b6a4942f0",
+                  "title": "Card confirmation payload manipulation",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Tampering",
+                  "description": "The diagram shows an explicit error/warning marker on this flow crossing the trust boundary from Customer/Internet into Stripe/Web, suggesting the confirmCardPayment call could be intercepted or tampered with, potentially altering payment intent parameters.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Ensure Stripe.js/Elements is used so raw card data never touches the Customer Client's own code, validate PaymentIntent client secrets server-side, and enforce TLS with strict CSP to prevent script injection.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 3,
+                  "score": ""
+                }
+              ],
+              "trustBoundaryIds": [
+                "347f80ba-5755-47a5-9a1b-295fe75552b2",
+                "4991548a-366e-4c45-87fc-487056f4379d"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(8) Customer Client send Stripe\ne.ConfirmCardPayment()",
                     "textAnchor": "middle",
@@ -989,6 +1181,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -998,20 +1200,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(8) Customer Client send Stripe\ne.ConfirmCardPayment()",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "2ccf113d-6dfb-4dca-9f2c-1fcfa321decf",
             "source": {
               "cell": "313655e5-4832-4424-b13c-7a3618543737",
@@ -1023,6 +1211,11 @@
             },
             "tools": {
               "items": [
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
                 "boundary",
                 "button-remove",
                 "vertices",
@@ -1055,19 +1248,31 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(5) Return PaymentIntent\nto the Merchant",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [],
+              "trustBoundaryIds": [
+                "d50ff0be-15cd-4ddb-80b3-37e06d71fcf2",
+                "4991548a-366e-4c45-87fc-487056f4379d"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(5) Return PaymentIntent\nto the Merchant",
                     "textAnchor": "middle",
@@ -1081,6 +1286,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -1090,20 +1305,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(5) Return PaymentIntent\nto the Merchant",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "3c3b4416-5b07-4b94-b73d-52f38137d29b",
             "source": {
               "cell": "43b2bb57-8d50-479f-abf3-c9addd9aa295",
@@ -1124,7 +1325,8 @@
             "shape": "flow",
             "attrs": {
               "line": {
-                "stroke": "#333333",
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "targetMarker": {
                   "name": "block"
                 },
@@ -1137,19 +1339,45 @@
             "width": 200,
             "height": 100,
             "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "(4) Merchant sends order information\ninc amount and currency",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [
+                {
+                  "id": "283043f1-8ac3-4f21-aca8-f703fd6b18ba",
+                  "title": "Order information tampering between Merchant and Stripe",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Tampering",
+                  "description": "Order amount and currency sent from the Merchant Web Server to Stripe API service could be altered in transit or via a compromised merchant backend, leading to incorrect charges.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Use Stripe's signed API requests with secret keys over TLS, validate amounts server-side against internal order records, and use idempotency keys to prevent duplicate/altered charges.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 6,
+                  "score": ""
+                }
+              ],
+              "trustBoundaryIds": [
+                "d50ff0be-15cd-4ddb-80b3-37e06d71fcf2",
+                "4991548a-366e-4c45-87fc-487056f4379d"
+              ]
+            },
             "labels": [
               {
-                "markup": [
-                  {
-                    "tagName": "ellipse",
-                    "selector": "labelBody"
-                  },
-                  {
-                    "tagName": "text",
-                    "selector": "labelText"
-                  }
-                ],
                 "attrs": {
+                  "label": {
+                    "text": "Data Flow"
+                  },
                   "labelText": {
                     "text": "(4) Merchant sends order information\ninc amount and currency",
                     "textAnchor": "middle",
@@ -1163,6 +1391,16 @@
                     "strokeWidth": 0
                   }
                 },
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
                 "position": {
                   "distance": 0.5,
                   "args": {
@@ -1172,20 +1410,6 @@
                 }
               }
             ],
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "(4) Merchant sends order information\ninc amount and currency",
-              "description": "",
-              "outOfScope": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
             "id": "bf0e4da4-150b-4f1a-b59d-3e82c7b03e91",
             "source": {
               "cell": "9a109a12-5616-4a78-b268-96e2cf68e9b3",
@@ -1220,8 +1444,8 @@
                 "text": "Merchant\nWeb Server"
               },
               "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "strokeDasharray": null
               }
             },
@@ -1317,12 +1541,33 @@
               "description": "",
               "outOfScope": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "handlesCardPayment": false,
               "handlesGoodsOrServices": false,
               "isWebApplication": false,
               "privilegeLevel": "",
-              "threats": []
+              "threats": [
+                {
+                  "id": "e1e4ad51-e5bc-49c7-bd9d-986829683bc3",
+                  "title": "Merchant server compromise leading to unauthorized Stripe API access",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Elevation of privilege",
+                  "description": "If the Merchant Web Server is compromised, an attacker could gain access to the Stripe secret API key stored there, allowing them to create fraudulent charges, refunds, or access other merchant data via the Stripe API.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Store Stripe secret keys in a secure vault (e.g., HashiCorp Vault, AWS Secrets Manager), apply least-privilege API key scopes, rotate keys regularly, and monitor for anomalous API usage.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 9,
+                  "score": ""
+                }
+              ]
+            },
+            "tools": {
+              "items": [
+                "boundary",
+                "button-remove"
+              ],
+              "name": null
             }
           },
           {
@@ -1339,8 +1584,8 @@
                 "text": "Stripe API service"
               },
               "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "strokeDasharray": null
               }
             },
@@ -1436,12 +1681,26 @@
               "description": "",
               "outOfScope": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "handlesCardPayment": false,
               "handlesGoodsOrServices": false,
               "isWebApplication": false,
               "privilegeLevel": "",
-              "threats": []
+              "threats": [
+                {
+                  "id": "b785c50d-a79b-4d52-8d33-2c2d50e1c7fa",
+                  "title": "Spoofed Stripe API endpoint",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Spoofing",
+                  "description": "If the Customer Client or Merchant Web Server does not validate the authenticity of the Stripe API service endpoint (e.g., via certificate validation), an attacker could redirect calls to a malicious endpoint mimicking Stripe.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Pin Stripe's public API certificate/domain, validate TLS certificates strictly, and use official Stripe SDKs which include built-in endpoint validation.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 5,
+                  "score": ""
+                }
+              ]
             }
           },
           {
@@ -1458,8 +1717,8 @@
                 "text": "Stripe\nPayment Service"
               },
               "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "strokeDasharray": null
               }
             },
@@ -1555,12 +1814,26 @@
               "description": "",
               "outOfScope": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "handlesCardPayment": false,
               "handlesGoodsOrServices": false,
               "isWebApplication": false,
               "privilegeLevel": "",
-              "threats": []
+              "threats": [
+                {
+                  "id": "ddf8c5ea-d7a0-4f84-a325-6090d474acd0",
+                  "title": "Payment processing service overload",
+                  "status": "Open",
+                  "severity": "Low",
+                  "type": "Denial of service",
+                  "description": "A flood of payment attempt requests (legitimate or malicious) could overwhelm the Stripe Payment Service or the API gateway in front of it, delaying or preventing legitimate transactions.\n\n[AI-generated suggestion — verify before relying on it]",
+                  "mitigation": "Rely on Stripe's built-in rate limiting and redundancy; implement client-side and merchant-side rate limiting/backoff and monitor for abnormal transaction volume patterns.",
+                  "modelType": "STRIDE",
+                  "new": true,
+                  "number": 10,
+                  "score": ""
+                }
+              ]
             }
           }
         ]
@@ -1568,6 +1841,6 @@
     ],
     "diagramTop": 1,
     "reviewer": "Paschoal Diniz",
-    "threatTop": 0
+    "threatTop": 11
   }
 }
